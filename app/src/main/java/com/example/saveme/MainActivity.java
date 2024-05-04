@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setNegativeButton("Cancel", (dialog, which) -> {
 
             });
+            builder.show();
 
         });
         // Check for permission to send SMS
