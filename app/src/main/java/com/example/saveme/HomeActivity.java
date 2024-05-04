@@ -309,24 +309,18 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout?");
-        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                logout();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // User cancelled logout, dismiss the dialog
-                dialog.dismiss();
-            }
+        builder.setPositiveButton("Logout", (dialog, which) -> logout());
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            // User cancelled logout, dismiss the dialog
+            dialog.dismiss();
         });
         builder.show();
     }
 
     private void logout() {
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
+        }
         mAuth.signOut();
         Intent intent = new Intent(HomeActivity.this, AuthActivity.class);
         startActivity(intent);
