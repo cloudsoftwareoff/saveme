@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "438730299416",
+    "project_id": "saveme-aba3d",
+    "storage_bucket": "saveme-aba3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438730299416:android:37ec8ac825dc7048cc8b6d",
+        "android_client_info": {
+          "package_name": "com.example.saveme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFMERb3Uruu3R41NvynvW5BDEyWHeWUeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

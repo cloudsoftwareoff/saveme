@@ -1,0 +1,126 @@
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:background="@drawable/gradient_background"
+        android:orientation="vertical">
+
+        <!-- CardView with profile header -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@android:color/white"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp">
+
+            <!-- Header LinearLayout -->
+            <LinearLayout
+                android:id="@+id/linear1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:background="#FFFFFF"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Profile Image -->
+                <ImageView
+                    android:id="@+id/goback"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="8dp"
+                    android:src="@drawable/arraw_back"
+                    android:scaleType="fitCenter" />
+
+                <!-- Title TextView -->
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="78dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Friends List"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textStyle="bold" />
+
+                <!-- Icon ImageView (Hidden by default) -->
+                <ImageView
+                    android:id="@+id/imageview2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/user_icon"
+                    android:alpha="0"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Main Content -->
+        <LinearLayout
+            android:id="@+id/linear2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <!-- CardView with Friends List -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="@android:color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <!-- Friends List LinearLayout -->
+                <LinearLayout
+                    android:id="@+id/linear_paired"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="4dp"
+                    >
+                        <TextView
+                            android:id="@+id/friends_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Friends List"
+                            android:textStyle="bold"
+                            android:layout_weight="1" />
+                        <ImageView
+                            android:id="@+id/add_friend"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/plus" />
+                    </LinearLayout>
+                    <!-- ListView for Friends -->
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <ListView
+                android:id="@+id/friends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:choiceMode="none" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+

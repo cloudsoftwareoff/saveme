@@ -1,0 +1,11 @@
+<resources>
+    <string name="hello">Hello World, activity_main3</string>
+    <string name="app_name">Save me</string>
+    <string name="nom">Nom : </string>
+    <string name="prenom">Prénom : </string>
+    <string name="signup">Create Account</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email Address</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
