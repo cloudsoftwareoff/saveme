@@ -28,7 +28,7 @@ xmlns:tools="http://schemas.android.com/tools">
     tools:targetApi="31">
     <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyBn9NQtMUKL6_iYfLiAW6l8Y1AFtpSxb0Q" />
+        android:value="KEY" />
 
     <activity
         android:name=".SettingsActivity"
@@ -92,5 +92,3 @@ xmlns:tools="http://schemas.android.com/tools">
 </application>
 
 </manifest>
-
-
