@@ -33,11 +33,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import android.Manifest;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -52,21 +54,23 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     TextView username, user_email;
-
+    private List<Hospital> hospitalList = new ArrayList<>();
     private LocationManager locationManager;
     private LocationListener locationListener;
     List<Contact> contacts;
     boolean send = false;
     SharedPreferences sharedPreferences;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        // init
         imgAnimation1 = findViewById(R.id.imgAnimation1);
         imgAnimation2 = findViewById(R.id.imgAnimation2);
         name = findViewById(R.id.name);
+        TextView nearestDoctorCount = findViewById(R.id.nearest);
         button = findViewById(R.id.button);
         ImageView friends = findViewById(R.id.friends_btn);
         mAuth = FirebaseAuth.getInstance();
@@ -75,7 +79,6 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout drawer = findViewById(R.id._nav_view);
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.axon);
         MediaPlayer startSound = MediaPlayer.create(this, R.raw.started);
-        View drawerView = LayoutInflater.from(this).inflate(R.layout._drawer, null);
         username = drawer.findViewById(R.id.username);
         user_email = drawer.findViewById(R.id.user_email);
         LinearLayout log_out = drawer.findViewById(R.id.logout);
@@ -86,9 +89,13 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout user_profile = drawer.findViewById(R.id.linear_profile);
         final boolean[] startSoundPlayed = { false };
         button.setEnabled(false);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // load data
         LoadUser();
-
         contacts = loadContactsList();
+        // min distance
+        double min_distance = 50;
+        // Listen for location
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -101,6 +108,18 @@ public class HomeActivity extends AppCompatActivity {
                 longitude = location.getLongitude();
                 if (sharedPreferences.getBoolean("stream", true)) {
                     RealTimeDB.pushLocationToDatabase(FirebaseAuth.getInstance().getUid(), latitude, longitude);
+
+                }
+                if (hospitalList != null && (user.isDiabetes() || user.isHeartProblem())) {
+                    int count = 0;
+                    for (Hospital hospital : hospitalList) {
+                        double distance = Util.calculateDistance(latitude, longitude, hospital.getLatitude(),
+                                hospital.getLongitude());
+                        if (distance < min_distance) {
+                            count++;
+                        }
+                    }
+                    nearestDoctorCount.setText(count + " hospitals near you");
 
                 }
 
@@ -161,6 +180,10 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, AboutusActivity.class);
             startActivity(intent);
         });
+        nearestDoctorCount.setOnClickListener(event -> {
+            Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+            startActivity(intent);
+        });
         // Activate
         button.setOnClickListener(v -> {
             if (statusAnimation) {
@@ -176,14 +199,41 @@ public class HomeActivity extends AppCompatActivity {
                         mediaPlayer.start();
                     }
 
+                    // send to message to nearest hospital ?
+                    // raduis 50Km
+                    if (hospitalList != null && (user.isDiabetes() || user.isHeartProblem())) {
+                        for (Hospital hospital : hospitalList) {
+                            double distance = Util.calculateDistance(latitude, longitude, hospital.getLatitude(),
+                                    hospital.getLongitude());
+                            if (distance < min_distance) {
+                                if (sharedPreferences.getBoolean("vibration", true)) {
+                                    VibrationHelper.vibrate(this, 200);
+                                }
+                                SMSHelper.sendMapLocationSMS(HomeActivity.this, "civilian ", user.getName(),
+                                        hospital.getPhone(), latitude, longitude);
+                            }
+                        }
+                    }
+
+                    // send message to his doctor
+                    if (user.isDiabetes() || user.isHeartProblem()) {
+                        if (sharedPreferences.getBoolean("vibration", true)) {
+                            VibrationHelper.vibrate(this, 200);
+                        }
+                        SMSHelper.sendMapLocationSMS(HomeActivity.this, "Your patient ", user.getName(),
+                                user.getPersonalDoctorPhone(), latitude, longitude);
+
+                    }
                     if (contacts != null) {
+                        // send message to his friend
+
                         for (Contact contact : contacts) {
 
                             if (contact.activated) {
                                 if (sharedPreferences.getBoolean("vibration", true)) {
                                     VibrationHelper.vibrate(this, 200);
                                 }
-                                SMSHelper.sendMapLocationSMS(HomeActivity.this, contact.getName(),
+                                SMSHelper.sendMapLocationSMS(HomeActivity.this, "Your friend ", user.getName(),
                                         contact.getPhoneNumber(), latitude, longitude);
 
                             }
@@ -196,6 +246,18 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
             statusAnimation = !statusAnimation;
+        });
+        // Fetch doctors data
+        db.collection("hospitals").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Hospital hospital = document.toObject(Hospital.class);
+                    hospitalList.add(hospital);
+                }
+
+            } else {
+                Toast.makeText(this, "Error fetching doctors.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -242,12 +304,14 @@ public class HomeActivity extends AppCompatActivity {
 
             userRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        user = document.toObject(User.class);
                         // DocumentSnapshot contains the data of the user
-                        String myname = document.getString("name");
-                        name.setText(myname);
-                        username.setText(myname);
+                        // String myname = document.getString("name");
+                        name.setText(user.getName());
+                        username.setText(user.getName());
 
                     } else {
                         // Document does not exist

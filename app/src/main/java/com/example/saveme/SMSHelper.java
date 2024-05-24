@@ -10,11 +10,11 @@ import android.widget.Toast;
 
 public class SMSHelper {
 
-    public static void sendMapLocationSMS(Context context, String contact, String phoneNumber, double latitude,
+    public static void sendMapLocationSMS(Context context,String prounous, String contact, String phoneNumber, double latitude,
             double longitude) {
 
         String mapLink = "https://maps.google.com/?q=" + latitude + "," + longitude;
-        String message = contact + "Needs help ,Location: " + mapLink;
+        String message =prounous+ contact + " Needs help ,Location: " + mapLink;
 
         SmsManager smsManager = SmsManager.getDefault();
 

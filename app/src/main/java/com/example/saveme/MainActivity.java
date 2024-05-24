@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         // Check for permission to send SMS
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this, new String[] { Manifest.permission.SEND_SMS }, 1);
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.SEND_SMS }, 1);
             return;
         }
         if (ActivityCompat.checkSelfPermission(this,
