@@ -1,4 +1,4 @@
-package com.example.saveme;
+package com.example.saveme.helper;
 
 import android.content.Context;
 import android.os.VibrationEffect;

@@ -1,7 +1,6 @@
 package com.example.saveme;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,8 +11,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +24,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.saveme.helper.SMSHelper;
+import com.example.saveme.helper.VibrationHelper;
+import com.example.saveme.models.Contact;
+import com.example.saveme.models.Hospital;
+import com.example.saveme.models.User;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -243,6 +245,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         Log.d("Contact", "Contacts list is empty");
                     }
+                    Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+                    startActivity(intent);
                 }
             }
             statusAnimation = !statusAnimation;

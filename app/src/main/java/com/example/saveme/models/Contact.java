@@ -1,8 +1,8 @@
-package com.example.saveme;
+package com.example.saveme.models;
 
 public class Contact {
     private String name;
-    boolean activated;
+    public boolean activated;
     private String phoneNumber;
 
     public Contact(String name, String phoneNumber,boolean activated) {

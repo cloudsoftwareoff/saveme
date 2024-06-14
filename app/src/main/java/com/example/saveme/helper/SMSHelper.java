@@ -1,4 +1,4 @@
-package com.example.saveme;
+package com.example.saveme.helper;
 
 import android.content.pm.PackageManager;
 import android.telephony.SmsManager;

@@ -1,4 +1,4 @@
-package com.example.saveme;
+package com.example.saveme.models;
 
 public class Doctor {
     private String id;

@@ -1,5 +1,7 @@
 package com.example.saveme;
 
+import com.example.saveme.models.Doctor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
