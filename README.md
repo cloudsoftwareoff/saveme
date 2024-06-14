@@ -34,4 +34,4 @@ Contributions to SaveMe are welcome! If you have any ideas, suggestions, or bug 
 
 ## Support
 
-For any questions, support, or assistance regarding SaveMe, please contact the developer at [developer@example.com](mailto:developer@example.com).
+For any questions, support, or assistance regarding SaveMe, please contact the developer at [contact@cloudsoftware.tn](mailto:contact@cloudsoftware.tn).
